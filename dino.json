@@ -64,11 +64,11 @@
             "fact": "Actually a flying reptile, the Pteranodon is not a dinosaur."
         },
         {
-            "species": "Pigeon",
-            "weight": 0.5,
-            "height": 9,
+            "species": "Snowey Owl",
+            "weight": 23,
+            "height": 5,
             "diet": "herbavor",
-            "where": "World Wide",
+            "where": "Greenland",
             "when": "Holocene",
             "fact": "All birds are living dinosaurs."
         }

@@ -1,9 +1,6 @@
-
-
-    // Create Dino Constructor
-
-    /**
- * @description The raw dinosaur data in a function to keep the data true
+/**
+ * @description The raw dinosaur data, put in function to avoid global variable
+ * @returns An array of dinosaur objects (plus a pigeon)
  */
 function rawDinoData() {
     const dinos = [
@@ -71,38 +68,34 @@ function rawDinoData() {
             "fact": "Actually a flying reptile, the Pteranodon is not a dinosaur."
         },
         {
-            "species": "Snowy Owl",
-            "weight": 6,
-            "height": 2,
-            "diet": "Carnivore",
-            "where": "Greenland",
+            "species": "Pigeon",
+            "weight": 0.5,
+            "height": 9,
+            "diet": "herbivore",
+            "where": "Worldwide",
             "when": "Holocene",
-            "fact": "All birds are living dinosaurs."
+            "fact": "All birds are living examples of dinosaurs."
         }
     ];
 
     return dinos;
 }
 
-
-
-    // Create Dino Objects
-
-
 /**
  * @description Represents a dinosaur object
  * @constructor
  * @param {Object} dinoData A single dinosaur object containing facts
-
+ * @param {string} units 'metric'
  */
-function DinoConstructor(dinoData) {
+function DinoConstructor(dinoData, units) {
     this.species = dinoData.species;
     this.diet = dinoData.diet;
     this.where = dinoData.where;
     this.when = dinoData.when;
     this.fact = dinoData.fact;
-
-    // Create Human Object
+    this.weight = Math.round(dinoData.weight / 2.21);
+    this.height = Math.round(dinoData.height * 2.54);
+}
 
 // Store the prototype dinosaur with methods, assign the prototype to the constructor
 const protoDino = {
@@ -141,12 +134,13 @@ const protoDino = {
     }
 };
 
-
+// Assign the methods in the protoDino to all objects created
+// with DinoConstructor
 DinoConstructor.prototype = protoDino;
 
 /**
- * @description Creates the dinosaur object array by calling constructor, inserts a human placeholder for proper iteration later
- * @param {string} units 'metric' or 'imperial' for height and weight
+ * @description Creates the dinosaur object array by calling constructor, inserts a human placeholder
+ * @param {string} units 'metric'
  * @returns {Array} Array of dinosaur objects from constructor
  */
 function createDinoArray(units) {
@@ -157,13 +151,12 @@ function createDinoArray(units) {
         dinoArray.push(new DinoConstructor(dino, units));
     });
 
-    // Insert the human placeholder here so that iteration works properly
+    // Insert the human placeholder here
     // in the grid element construction.  Human should be in the centre square.
     dinoArray.splice(4, 0, 'human placeholder');
 
     return dinoArray;
 }
-
 
 /**
  * @description Creates a grid element for a dinosaur object
@@ -173,10 +166,10 @@ function createDinoArray(units) {
  */
 function createDinoElement(dinoData, humanData) {
     let fact;
-    // Project requirement is that snowey owl should always return the same fact,
-    // We set the number for SO
+    // Project requirement is that pigeon should always return the same fact,
+    // so we set a constant number pigeon
     // Dinosaurs each return one of 6 facts randomly chosen here
-    const randomNumber = dinoData.species === 'Snowey Owl' ? 2 : Math.round(Math.random() * 5);
+    const randomNumber = dinoData.species === 'Pigeon' ? 2 : Math.round(Math.random() * 5);
 
     switch (randomNumber) {
         case 0:
@@ -198,7 +191,7 @@ function createDinoElement(dinoData, humanData) {
             fact = dinoData.compareDiet(humanData.diet);
             break;
         default:
-            fact = 'Dinosaurs live on, in our memory!';
+            fact = 'Dinosaurs are cool!';
     }
 
     // Create the new grid item with title, image, and chosen fact
@@ -213,22 +206,18 @@ function createDinoElement(dinoData, humanData) {
  * @description Get the user's data from the contact form
  * @returns An object containing the user's data
  */
-function getHumanData() {
-        height = (document.getElementById('feet').value * 12) + Number(document.getElementById('inches').value);
-        weight = document.getElementById('weight-imperial').value;
-    }
+function getHumanData(height, weight, name, diet, units) {
 
     const humanData = {
         name: document.getElementById('name').value,
-        height: height,
-        weight: weight,
+        height: document.getElementById('height-metric').value,
+        weight: document.getElementById('weight-metric').value,
         diet: document.getElementById('diet').value,
         units: units
     };
 
     return humanData;
 }
-
 
 /**
  * @description Creates a grid element for the human object
@@ -243,6 +232,7 @@ function createHumanElement(humanData) {
 
     return newDiv;
 }
+
 
 /**
  * @description Creates the grid for the UI result
@@ -300,5 +290,5 @@ function clicked(e) {
  */
 (function () {
     document.getElementById('btn').addEventListener('click', clicked);
-    document.getElementById('repeat-btn').addEventListener('click', repeat);
+
 })();
